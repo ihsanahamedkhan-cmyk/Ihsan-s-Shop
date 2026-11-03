@@ -15,16 +15,53 @@ const sessions = new Map();
 const defaultStore = {
   settings: {
     brandName: "Ihsan's Shop",
+    theme: 'gold',
     eyebrow: 'Made with intention · shipped with care',
     heroTitle: 'Useful things, made by Ihsan.',
     heroText: 'A small collection of thoughtful goods for everyday life. Browse the first release below and check back as new pieces arrive.',
     heroButtonLabel: 'Shop the collection',
+    heroArtBackText: 'COMING\nSOON',
+    heroArtLabel: 'I / 01',
+    heroArtTitle: 'A little\nmore useful.',
+    heroArtNote: 'Product imagery\ncoming soon',
+    navShop: 'Shop',
+    navStory: 'The story',
+    navContact: 'Contact',
     announcement: 'Local orders are welcome · Call 512-429-8551 during business hours CST',
     phone: '512-429-8551',
     hours: 'Monday–Saturday · 9:00 AM–6:00 PM CST',
-    accentColor: '#d96c4f',
+    accentColor: '#b58b35',
+    shopEyebrow: 'The first release',
+    shopTitle: 'Good things, in small batches.',
+    shopNote: 'Every product is selected and packed by Ihsan. Add what you like to your bag, then call to place your order.',
     aboutTitle: 'Small-batch, genuinely useful.',
     aboutText: 'Every item here starts with a simple question: can this make an ordinary day a little better? The answer becomes a product, made in small batches and offered directly to you.',
+    storyEyebrow: 'Why this shop exists',
+    storyLink: 'Have a question? Let’s talk',
+    storyPosterText: 'HAND\nMADE\nUSEFUL',
+    contactEyebrow: 'Place an order',
+    contactTitle: 'Ready when you are.',
+    contactText: 'Online checkout is intentionally personal. When you are ready, call during business hours and Ihsan will help finish your order.',
+    bagLabel: 'Bag',
+    cartEyebrow: 'Your selection',
+    cartTitle: 'Your bag',
+    emptyCartText: 'Your bag is waiting for something good. Add a product from the collection to begin.',
+    cartTotalLabel: 'Estimated total',
+    checkoutButtonLabel: 'Continue to checkout',
+    cartNote: 'No payment is collected online. You will call to place your order.',
+    checkoutEyebrow: 'One last step',
+    checkoutTitle: 'Let’s place your order by phone.',
+    checkoutText: 'Ihsan’s Shop keeps checkout personal. Call during business hours with the items below and we’ll confirm availability, delivery details, and payment together.',
+    checkoutSummaryTitle: 'Your selection',
+    checkoutEditLabel: 'Edit bag',
+    checkoutNote: 'Your cart is saved on this device. Nothing is charged online.',
+    checkoutBackLabel: 'Back to shop',
+    checkoutFooterAdminLabel: 'Admin sign-in',
+    footerShopLabel: 'Shop',
+    footerStoryLabel: 'Story',
+    footerAdminLabel: 'Admin sign-in',
+    heroImage: '',
+    storyImage: '',
     footerNote: 'Thoughtful goods from Ihsan, made for your everyday.',
   },
   admin: {
@@ -42,6 +79,7 @@ const defaultStore = {
       featured: true,
       active: true,
       placeholder: 'Tote / 01',
+      image: '',
     },
     {
       id: 'cedar-desk-tray',
@@ -53,6 +91,7 @@ const defaultStore = {
       featured: true,
       active: true,
       placeholder: 'Cedar / 02',
+      image: '',
     },
     {
       id: 'linen-apron',
@@ -64,6 +103,7 @@ const defaultStore = {
       featured: true,
       active: true,
       placeholder: 'Linen / 03',
+      image: '',
     },
     {
       id: 'daily-notebook',
@@ -75,6 +115,7 @@ const defaultStore = {
       featured: false,
       active: true,
       placeholder: 'Notes / 04',
+      image: '',
     },
   ],
 };
@@ -154,7 +195,7 @@ function readBody(req) {
     let body = '';
     req.on('data', (chunk) => {
       body += chunk;
-      if (body.length > 1_000_000) req.destroy();
+      if (body.length > 6_000_000) req.destroy();
     });
     req.on('end', () => {
       try { resolve(body ? JSON.parse(body) : {}); } catch { reject(new Error('Invalid JSON')); }
@@ -174,7 +215,17 @@ function cleanProduct(input, existing = {}) {
     featured: Boolean(input.featured ?? existing.featured),
     active: input.active !== undefined ? Boolean(input.active) : existing.active !== false,
     placeholder: String(input.placeholder ?? existing.placeholder ?? 'Image coming soon').trim().slice(0, 40),
+    image: cleanImage(input.image !== undefined ? input.image : existing.image),
   };
+}
+
+function cleanImage(value) {
+  const image = String(value || '');
+  if (!image) return '';
+  if (!/^data:image\/(png|jpe?g|webp|gif);base64,[A-Za-z0-9+/=]+$/.test(image) || image.length > 5_000_000) {
+    throw new Error('Images must be PNG, JPG, WEBP, or GIF files smaller than 3.5 MB.');
+  }
+  return image;
 }
 
 function safePublicPath(urlPath) {
@@ -222,9 +273,12 @@ async function handleApi(req, res, url) {
   if (req.method === 'PUT' && url.pathname === '/api/admin/store') {
     try {
       const body = await readBody(req);
-      const allowed = ['brandName', 'eyebrow', 'heroTitle', 'heroText', 'heroButtonLabel', 'announcement', 'phone', 'hours', 'accentColor', 'aboutTitle', 'aboutText', 'footerNote'];
+      const allowed = ['brandName', 'theme', 'eyebrow', 'heroTitle', 'heroText', 'heroButtonLabel', 'heroArtBackText', 'heroArtLabel', 'heroArtTitle', 'heroArtNote', 'navShop', 'navStory', 'navContact', 'announcement', 'phone', 'hours', 'accentColor', 'shopEyebrow', 'shopTitle', 'shopNote', 'aboutTitle', 'aboutText', 'storyEyebrow', 'storyLink', 'storyPosterText', 'contactEyebrow', 'contactTitle', 'contactText', 'bagLabel', 'cartEyebrow', 'cartTitle', 'emptyCartText', 'cartTotalLabel', 'checkoutButtonLabel', 'cartNote', 'checkoutEyebrow', 'checkoutTitle', 'checkoutText', 'checkoutSummaryTitle', 'checkoutEditLabel', 'checkoutNote', 'checkoutBackLabel', 'checkoutFooterAdminLabel', 'footerShopLabel', 'footerStoryLabel', 'footerAdminLabel', 'footerNote'];
       for (const key of allowed) {
         if (body[key] !== undefined) store.settings[key] = String(body[key]).trim().slice(0, 500);
+      }
+      for (const key of ['heroImage', 'storyImage']) {
+        if (body[key] !== undefined) store.settings[key] = cleanImage(body[key]);
       }
       saveStore(store);
       return sendJson(res, 200, { settings: store.settings });

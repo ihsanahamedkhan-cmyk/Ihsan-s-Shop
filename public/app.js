@@ -14,14 +14,20 @@ async function loadShop() {
 
 function applySettings() {
   const s = state.settings;
+  document.documentElement.dataset.theme = s.theme || 'gold';
   document.documentElement.style.setProperty('--accent', s.accentColor || '#d96c4f');
   document.title = `${s.brandName} — Thoughtful goods for everyday life`;
   ['brandName', 'footerBrand'].forEach((id) => { const node = document.getElementById(id); if (node) node.textContent = s.brandName; });
-  ['announcement', 'eyebrow', 'heroTitle', 'heroText', 'aboutTitle', 'aboutText', 'hours', 'footerNote'].forEach((id) => { const node = document.getElementById(id); if (node) node.textContent = s[id] || ''; });
+  ['announcement', 'eyebrow', 'heroTitle', 'heroText', 'heroArtBackText', 'heroArtLabel', 'heroArtTitle', 'heroArtNote', 'navShop', 'navStory', 'navContact', 'shopEyebrow', 'shopTitle', 'shopNote', 'storyEyebrow', 'storyLink', 'aboutTitle', 'aboutText', 'contactEyebrow', 'contactTitle', 'contactText', 'hours', 'bagLabel', 'cartEyebrow', 'cartTitle', 'cartTotalLabel', 'cartNote', 'footerNote', 'footerShopLabel', 'footerStoryLabel', 'footerAdminLabel'].forEach((id) => { const node = document.getElementById(id); if (node) node.textContent = s[id] || ''; });
+  const storyPosterText = $('#storyPosterText');
+  if (storyPosterText) storyPosterText.textContent = s.storyPosterText || '';
   $('#heroButton').firstChild.textContent = `${s.heroButtonLabel || 'Shop the collection'} `;
+  $('#checkoutButton').firstChild.textContent = `${s.checkoutButtonLabel || 'Continue to checkout'} `;
   $('#phoneLink').textContent = `${s.phone} `;
   $('#phoneLink').insertAdjacentHTML('beforeend', '<span>↗</span>');
   $('#phoneLink').href = `tel:${s.phone.replace(/[^\d+]/g, '')}`;
+  if (s.heroImage && /^data:image\/(png|jpe?g|webp|gif);base64,/.test(s.heroImage)) $('#heroArt .art-card-front').style.backgroundImage = `url('${s.heroImage}')`;
+  if (s.storyImage && /^data:image\/(png|jpe?g|webp|gif);base64,/.test(s.storyImage)) $('#storyPoster').style.backgroundImage = `url('${s.storyImage}')`;
   $('#year').textContent = new Date().getFullYear();
 }
 
@@ -33,7 +39,7 @@ function renderCategories() {
 
 function renderProducts() {
   const visible = state.products.filter((product) => state.category === 'All' || product.category === state.category);
-  $('#productGrid').innerHTML = visible.length ? visible.map((product, index) => `<article class="product-card"><div class="product-image"><span class="product-index">${String(index + 1).padStart(2, '0')} / ${String(visible.length).padStart(2, '0')}</span><span class="placeholder-label">${escapeHtml(product.placeholder || 'Image coming soon')}</span></div><div class="product-info"><div><h3>${escapeHtml(product.name)}</h3><p>${escapeHtml(product.category)}</p></div><span class="product-price">${money(product.price)}</span></div><button class="add-button" data-add="${product.id}" ${product.inventory < 1 ? 'disabled' : ''}>${product.inventory < 1 ? 'Sold out' : 'Add to bag'} <span>＋</span></button></article>`).join('') : '<div class="loading-card">No products in this collection yet.</div>';
+  $('#productGrid').innerHTML = visible.length ? visible.map((product, index) => `<article class="product-card"><div class="product-image ${product.image ? 'has-product-image' : ''}"${product.image ? ` style="background-image:url('${product.image}')"` : ''}><span class="product-index">${String(index + 1).padStart(2, '0')} / ${String(visible.length).padStart(2, '0')}</span><span class="placeholder-label">${escapeHtml(product.placeholder || 'Image coming soon')}</span></div><div class="product-info"><div><h3>${escapeHtml(product.name)}</h3><p>${escapeHtml(product.category)}</p></div><span class="product-price">${money(product.price)}</span></div><button class="add-button" data-add="${product.id}" ${product.inventory < 1 ? 'disabled' : ''}>${product.inventory < 1 ? 'Sold out' : 'Add to bag'} <span>＋</span></button></article>`).join('') : '<div class="loading-card">No products in this collection yet.</div>';
   document.querySelectorAll('[data-add]').forEach((button) => button.addEventListener('click', () => addToCart(button.dataset.add)));
 }
 
@@ -56,7 +62,7 @@ function renderCart() {
   $('#cartTotal').textContent = money(total);
   $('#checkoutButton').style.opacity = lines.length ? '1' : '.45';
   $('#checkoutButton').style.pointerEvents = lines.length ? 'auto' : 'none';
-  $('#cartItems').innerHTML = lines.length ? lines.map(({ product, quantity }) => `<div class="cart-item"><div class="cart-item-image">${escapeHtml(product.placeholder || 'Soon')}</div><div><p class="cart-item-name">${escapeHtml(product.name)}</p><span class="cart-item-meta">${money(product.price)} each</span><div class="qty-controls"><button data-qty="-1" data-id="${product.id}" aria-label="Decrease quantity">−</button><span>${quantity}</span><button data-qty="1" data-id="${product.id}" aria-label="Increase quantity">＋</button></div></div><span class="cart-item-price">${money(product.price * quantity)}</span></div>`).join('') : '<p class="empty-cart">Your bag is waiting for something good. Add a product from the collection to begin.</p>';
+  $('#cartItems').innerHTML = lines.length ? lines.map(({ product, quantity }) => `<div class="cart-item"><div class="cart-item-image ${product.image ? 'has-product-image' : ''}"${product.image ? ` style="background-image:url('${product.image}')"` : ''}>${product.image ? '' : escapeHtml(product.placeholder || 'Soon')}</div><div><p class="cart-item-name">${escapeHtml(product.name)}</p><span class="cart-item-meta">${money(product.price)} each</span><div class="qty-controls"><button data-qty="-1" data-id="${product.id}" aria-label="Decrease quantity">−</button><span>${quantity}</span><button data-qty="1" data-id="${product.id}" aria-label="Increase quantity">＋</button></div></div><span class="cart-item-price">${money(product.price * quantity)}</span></div>`).join('') : `<p class="empty-cart">${escapeHtml(state.settings.emptyCartText || 'Your bag is waiting for something good. Add a product from the collection to begin.')}</p>`;
   document.querySelectorAll('[data-qty]').forEach((button) => button.addEventListener('click', () => updateQuantity(button.dataset.id, Number(button.dataset.qty))));
 }
 function updateQuantity(id, change) { const line = state.cart.find((item) => item.id === id); const product = state.products.find((item) => item.id === id); if (!line || !product) return; line.quantity += change; if (line.quantity <= 0) state.cart = state.cart.filter((item) => item.id !== id); else line.quantity = Math.min(line.quantity, product.inventory); saveCart(); renderCart(); }

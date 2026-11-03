@@ -1,14 +1,109 @@
 <!doctype html>
 <html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Admin dashboard — Ihsan's Shop</title><link rel="stylesheet" href="/styles.css"></head>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin dashboard — Ihsan's Shop</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
 <body class="admin-body dashboard-body">
-  <header class="admin-header"><a class="wordmark" href="/"><span class="wordmark-mark">IS</span><span>Ihsan's Shop</span></a><div class="admin-header-actions"><span id="signedInAs"></span><a href="/" class="text-link">View shop ↗</a><button id="logoutButton" class="button button-ghost">Sign out</button></div></header>
-  <main class="dashboard section-shell"><div class="dashboard-intro"><div><p class="eyebrow">Admin workspace</p><h1>Make it yours.</h1><p>Update your shop, keep the collection fresh, and control what customers see.</p></div><div class="dashboard-status"><span class="status-dot"></span> Store is live</div></div>
+  <header class="admin-header">
+    <a class="wordmark" href="/"><span class="wordmark-mark">IS</span><span>Ihsan's Shop</span></a>
+    <div class="admin-header-actions"><span id="signedInAs"></span><a href="/" class="text-link">View shop ↗</a><button id="logoutButton" class="button button-ghost">Sign out</button></div>
+  </header>
+  <main class="dashboard section-shell">
+    <div class="dashboard-intro"><div><p class="eyebrow">Admin workspace</p><h1>Make it yours.</h1><p>Update your shop, keep the collection fresh, and control what customers see.</p></div><div class="dashboard-status"><span class="status-dot"></span> Store is live</div></div>
     <div class="dashboard-tabs"><button class="tab-button active" data-tab="products">Products <span id="productCount">0</span></button><button class="tab-button" data-tab="storefront">Storefront</button><button class="tab-button" data-tab="account">Account</button></div>
-    <section class="dashboard-panel active" id="productsPanel"><div class="panel-heading"><div><p class="eyebrow">Your catalog</p><h2>Products</h2></div><button class="button button-dark" id="newProductButton">Add product <span>＋</span></button></div><div class="admin-table" id="adminProducts"></div></section>
-    <section class="dashboard-panel" id="storefrontPanel"><div class="panel-heading"><div><p class="eyebrow">Brand & checkout</p><h2>Storefront settings</h2></div></div><form class="settings-form" id="settingsForm"><div class="form-section-label">Homepage</div><label>Shop name<input name="brandName" required></label><label>Small eyebrow text<input name="eyebrow"></label><label>Hero headline<input name="heroTitle" required></label><label>Hero description<textarea name="heroText" rows="3"></textarea></label><label>Hero button label<input name="heroButtonLabel"></label><label>Accent color<input name="accentColor" type="color"></label><div class="form-section-label">About & contact</div><label>About headline<input name="aboutTitle"></label><label>About text<textarea name="aboutText" rows="3"></textarea></label><label>Announcement bar<input name="announcement"></label><label>Order phone number<input name="phone"></label><label>Business hours<input name="hours"></label><label>Footer note<input name="footerNote"></label><div class="form-actions"><button class="button button-dark" type="submit">Save storefront <span>↗</span></button><p class="form-message" id="settingsMessage"></p></div></form></section>
-    <section class="dashboard-panel" id="accountPanel"><div class="panel-heading"><div><p class="eyebrow">Security</p><h2>Change password</h2></div></div><form class="settings-form narrow-form" id="passwordForm"><label>Current password<input name="currentPassword" type="password" required></label><label>New password<input name="newPassword" type="password" minlength="8" required></label><label>Confirm new password<input name="confirmPassword" type="password" minlength="8" required></label><div class="form-actions"><button class="button button-dark" type="submit">Update password <span>↗</span></button><p class="form-message" id="passwordMessage"></p></div></form></section>
+
+    <section class="dashboard-panel active" id="productsPanel">
+      <div class="panel-heading"><div><p class="eyebrow">Your catalog</p><h2>Products</h2></div><button class="button button-dark" id="newProductButton">Add product <span>＋</span></button></div>
+      <div class="admin-table" id="adminProducts"></div>
+    </section>
+
+    <section class="dashboard-panel" id="storefrontPanel">
+      <div class="panel-heading"><div><p class="eyebrow">Brand & checkout</p><h2>Storefront settings</h2></div></div>
+      <form class="settings-form" id="settingsForm">
+        <div class="form-section-label">Theme & homepage</div>
+        <label>Shop name<input name="brandName" required></label>
+        <label>Theme<select name="theme"><option value="gold">Gold on white</option><option value="original">Original terracotta</option></select></label>
+        <label>Accent color<input name="accentColor" type="color"></label>
+        <label>Announcement bar<input name="announcement"></label>
+        <label>Small eyebrow text<input name="eyebrow"></label>
+        <label>Hero headline<input name="heroTitle" required></label>
+        <label>Hero description<textarea name="heroText" rows="3"></textarea></label>
+        <label>Hero button label<input name="heroButtonLabel"></label>
+        <label>Hero art back text<textarea name="heroArtBackText" rows="2"></textarea></label>
+        <label>Hero art label<input name="heroArtLabel"></label>
+        <label>Hero art title<textarea name="heroArtTitle" rows="2"></textarea></label>
+        <label>Hero art note<textarea name="heroArtNote" rows="2"></textarea></label>
+        <label>Hero image<input name="heroImageFile" type="file" accept="image/png,image/jpeg,image/webp,image/gif"><small class="field-help">Optional. Use a PNG, JPG, WEBP, or GIF under 3.5 MB.</small></label>
+        <label>Shop section eyebrow<input name="shopEyebrow"></label>
+        <label>Shop section title<input name="shopTitle"></label>
+        <label>Shop section description<textarea name="shopNote" rows="3"></textarea></label>
+
+        <div class="form-section-label">Navigation & story</div>
+        <label>Shop navigation label<input name="navShop"></label>
+        <label>Story navigation label<input name="navStory"></label>
+        <label>Contact navigation label<input name="navContact"></label>
+        <label>Story eyebrow<input name="storyEyebrow"></label>
+        <label>Story headline<input name="aboutTitle"></label>
+        <label>Story text<textarea name="aboutText" rows="4"></textarea></label>
+        <label>Story link label<input name="storyLink"></label>
+        <label>Story poster text<textarea name="storyPosterText" rows="3"></textarea></label>
+        <label>Story image<input name="storyImageFile" type="file" accept="image/png,image/jpeg,image/webp,image/gif"><small class="field-help">Optional. Upload your own story image.</small></label>
+
+        <div class="form-section-label">Bag, contact & checkout</div>
+        <label>Contact eyebrow<input name="contactEyebrow"></label>
+        <label>Contact headline<input name="contactTitle"></label>
+        <label>Contact text<textarea name="contactText" rows="3"></textarea></label>
+        <label>Order phone number<input name="phone"></label>
+        <label>Business hours<input name="hours"></label>
+        <label>Bag label<input name="bagLabel"></label>
+        <label>Bag eyebrow<input name="cartEyebrow"></label>
+        <label>Bag title<input name="cartTitle"></label>
+        <label>Empty bag message<textarea name="emptyCartText" rows="2"></textarea></label>
+        <label>Cart total label<input name="cartTotalLabel"></label>
+        <label>Checkout button label<input name="checkoutButtonLabel"></label>
+        <label>Cart note<textarea name="cartNote" rows="2"></textarea></label>
+        <label>Checkout eyebrow<input name="checkoutEyebrow"></label>
+        <label>Checkout headline<input name="checkoutTitle"></label>
+        <label>Checkout text<textarea name="checkoutText" rows="3"></textarea></label>
+        <label>Checkout summary title<input name="checkoutSummaryTitle"></label>
+        <label>Edit bag label<input name="checkoutEditLabel"></label>
+        <label>Checkout note<textarea name="checkoutNote" rows="2"></textarea></label>
+        <label>Checkout back label<input name="checkoutBackLabel"></label>
+        <label>Checkout admin link label<input name="checkoutFooterAdminLabel"></label>
+
+        <div class="form-section-label">Footer</div>
+        <label>Footer note<input name="footerNote"></label>
+        <label>Footer shop link label<input name="footerShopLabel"></label>
+        <label>Footer story link label<input name="footerStoryLabel"></label>
+        <label>Footer admin link label<input name="footerAdminLabel"></label>
+        <div class="form-actions"><button class="button button-dark" type="submit">Save storefront <span>↗</span></button><p class="form-message" id="settingsMessage"></p></div>
+      </form>
+    </section>
+
+    <section class="dashboard-panel" id="accountPanel">
+      <div class="panel-heading"><div><p class="eyebrow">Security</p><h2>Change password</h2></div></div>
+      <form class="settings-form narrow-form" id="passwordForm"><label>Current password<input name="currentPassword" type="password" required></label><label>New password<input name="newPassword" type="password" minlength="8" required></label><label>Confirm new password<input name="confirmPassword" type="password" minlength="8" required></label><div class="form-actions"><button class="button button-dark" type="submit">Update password <span>↗</span></button><p class="form-message" id="passwordMessage"></p></div></form>
+    </section>
   </main>
-  <div class="modal-backdrop" id="productModal"><section class="product-modal"><div class="drawer-header"><div><p class="eyebrow">Catalog editor</p><h2 id="modalTitle">Add product</h2></div><button class="close-button" id="closeModal">×</button></div><form class="settings-form" id="productForm"><input type="hidden" name="id"><label>Product name<input name="name" required maxlength="100"></label><label>Description<textarea name="description" rows="3" required></textarea></label><div class="two-column"><label>Price (USD)<input name="price" type="number" step="0.01" min="0" required></label><label>Inventory<input name="inventory" type="number" step="1" min="0" required></label></div><div class="two-column"><label>Category<input name="category" value="General"></label><label>Image label<input name="placeholder" value="Image coming soon"></label></div><div class="check-row"><label><input name="featured" type="checkbox"> Feature on homepage</label><label><input name="active" type="checkbox" checked> Visible in shop</label></div><div class="form-actions"><button class="button button-dark" type="submit">Save product <span>↗</span></button><p class="form-message" id="productMessage"></p></div></form></section></div><script src="/admin.js"></script>
+
+  <div class="modal-backdrop" id="productModal">
+    <section class="product-modal">
+      <div class="drawer-header"><div><p class="eyebrow">Catalog editor</p><h2 id="modalTitle">Add product</h2></div><button class="close-button" id="closeModal">×</button></div>
+      <form class="settings-form" id="productForm">
+        <input type="hidden" name="id">
+        <label>Product name<input name="name" required maxlength="100"></label>
+        <label>Description<textarea name="description" rows="3" required></textarea></label>
+        <div class="two-column"><label>Price (USD)<input name="price" type="number" step="0.01" min="0" required></label><label>Inventory<input name="inventory" type="number" step="1" min="0" required></label></div>
+        <div class="two-column"><label>Category<input name="category" value="General"></label><label>Image label<input name="placeholder" value="Image coming soon"></label></div>
+        <label>Product image<input name="imageFile" type="file" accept="image/png,image/jpeg,image/webp,image/gif"><small class="field-help">Optional. Use a PNG, JPG, WEBP, or GIF under 3.5 MB.</small></label>
+        <div class="check-row"><label><input name="featured" type="checkbox"> Feature on homepage</label><label><input name="active" type="checkbox" checked> Visible in shop</label><label><input name="removeImage" type="checkbox"> Remove existing image</label></div>
+        <div class="form-actions"><button class="button button-dark" type="submit">Save product <span>↗</span></button><p class="form-message" id="productMessage"></p></div>
+      </form>
+    </section>
+  </div>
+  <script src="/admin.js"></script>
 </body>
 </html>
