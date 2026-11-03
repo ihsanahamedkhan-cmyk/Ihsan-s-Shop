@@ -289,6 +289,9 @@ const server = http.createServer(async (req, res) => {
       const handled = await handleApi(req, res, url);
       if (handled !== false) return;
     }
+    if (url.pathname === '/admin.html' && !currentSession(req)) {
+      return sendText(res, 302, '', { Location: '/login.html' });
+    }
     const filePath = safePublicPath(url.pathname);
     if (!filePath) return sendText(res, 403, 'Forbidden');
     fs.stat(filePath, (error, stats) => {
