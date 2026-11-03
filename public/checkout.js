@@ -1,5 +1,10 @@
 const moneyCheckout = (value) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
 const checkoutCart = JSON.parse(localStorage.getItem('ihsan_shop_cart') || '[]');
+const checkoutThemeToggle = document.getElementById('checkoutThemeToggle');
+document.documentElement.dataset.mode = localStorage.getItem('ihsan_shop_mode') || 'light';
+function updateCheckoutThemeButton() { const dark = document.documentElement.dataset.mode === 'dark'; checkoutThemeToggle.innerHTML = dark ? '◐ <span>Light mode</span>' : '◐ <span>Dark mode</span>'; }
+checkoutThemeToggle.addEventListener('click', () => { document.documentElement.dataset.mode = document.documentElement.dataset.mode === 'dark' ? 'light' : 'dark'; localStorage.setItem('ihsan_shop_mode', document.documentElement.dataset.mode); updateCheckoutThemeButton(); });
+updateCheckoutThemeButton();
 async function loadCheckout() {
   const [storeResponse, productResponse] = await Promise.all([fetch('/api/store'), fetch('/api/products')]);
   const settings = (await storeResponse.json()).settings;

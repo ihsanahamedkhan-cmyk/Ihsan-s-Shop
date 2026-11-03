@@ -6,6 +6,7 @@ A lightweight storefront for Ihsan's handmade products. It includes:
 - Shopping bag with quantities and local browser persistence
 - Phone-only checkout flow for calling `512-429-8551` during business hours CST
 - Protected admin dashboard for products, prices, inventory, storefront copy, contact details, and accent color
+- Dark mode toggle and optional background music with mute/unmute controls
 - JSON-backed persistence in `data/store.json`
 
 ## Run locally

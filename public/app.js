@@ -1,6 +1,30 @@
 const state = { products: [], settings: {}, cart: JSON.parse(localStorage.getItem('ihsan_shop_cart') || '[]'), category: 'All' };
 const $ = (selector) => document.querySelector(selector);
 const money = (value) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
+const music = $('#backgroundMusic');
+const themeToggle = $('#themeToggle');
+const musicToggle = $('#musicToggle');
+const musicMuteButton = $('#musicMuteButton');
+
+document.documentElement.dataset.mode = localStorage.getItem('ihsan_shop_mode') || 'light';
+music.volume = 0.16;
+music.muted = localStorage.getItem('ihsan_shop_music_muted') === 'true';
+function updateThemeToggle() {
+  const dark = document.documentElement.dataset.mode === 'dark';
+  themeToggle.innerHTML = dark ? '◐ <span>Light mode</span>' : '◐ <span>Dark mode</span>';
+  themeToggle.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+}
+function updateMusicControls() {
+  const playing = !music.paused;
+  musicToggle.innerHTML = playing ? '♫ <span>Pause music</span>' : '♫ <span>Play music</span>';
+  musicMuteButton.disabled = !playing;
+  musicMuteButton.textContent = music.muted ? 'Unmute' : 'Mute';
+}
+themeToggle.addEventListener('click', () => { document.documentElement.dataset.mode = document.documentElement.dataset.mode === 'dark' ? 'light' : 'dark'; localStorage.setItem('ihsan_shop_mode', document.documentElement.dataset.mode); updateThemeToggle(); });
+musicToggle.addEventListener('click', async () => { if (music.paused) { try { await music.play(); } catch { musicToggle.innerHTML = '♫ <span>Tap to play</span>'; } } else music.pause(); updateMusicControls(); });
+musicMuteButton.addEventListener('click', () => { music.muted = !music.muted; localStorage.setItem('ihsan_shop_music_muted', String(music.muted)); updateMusicControls(); });
+music.addEventListener('play', updateMusicControls); music.addEventListener('pause', updateMusicControls);
+updateThemeToggle(); updateMusicControls();
 
 async function loadShop() {
   const [storeResponse, productResponse] = await Promise.all([fetch('/api/store'), fetch('/api/products')]);
@@ -15,6 +39,7 @@ async function loadShop() {
 function applySettings() {
   const s = state.settings;
   document.documentElement.dataset.theme = s.theme || 'gold';
+  document.documentElement.dataset.mode = localStorage.getItem('ihsan_shop_mode') || 'light';
   document.documentElement.style.setProperty('--accent', s.accentColor || '#d96c4f');
   document.title = `${s.brandName} — Thoughtful goods for everyday life`;
   ['brandName', 'footerBrand'].forEach((id) => { const node = document.getElementById(id); if (node) node.textContent = s.brandName; });
