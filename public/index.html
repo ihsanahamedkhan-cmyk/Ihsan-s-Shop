@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ihsan's Shop — Thoughtful goods for everyday life</title>
+  <meta name="description" content="Thoughtful goods made by Ihsan, offered in small batches.">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="announcement" id="announcement"></div>
+  <header class="site-header">
+    <a class="wordmark" href="/"><span class="wordmark-mark">IS</span><span id="brandName">Ihsan's Shop</span></a>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="#shop">Shop</a>
+      <a href="#story">The story</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="cart-button" id="cartButton" aria-label="Open shopping bag">Bag <span id="cartCount">0</span></button>
+  </header>
+
+  <main>
+    <section class="hero section-shell">
+      <div class="hero-copy">
+        <p class="eyebrow" id="eyebrow"></p>
+        <h1 id="heroTitle"></h1>
+        <p class="hero-text" id="heroText"></p>
+        <a class="button button-dark" href="#shop" id="heroButton">Shop the collection <span>↘</span></a>
+      </div>
+      <div class="hero-art" aria-label="Product image placeholder">
+        <div class="art-card art-card-back"><span>COMING<br>SOON</span></div>
+        <div class="art-card art-card-front"><span class="art-label">I / 01</span><span class="art-title">A little<br>more useful.</span><span class="art-note">Product imagery<br>coming soon</span></div>
+        <span class="hero-stamp">Made<br>slowly<br>for you</span>
+      </div>
+    </section>
+
+    <section class="shop section-shell" id="shop">
+      <div class="section-heading">
+        <div><p class="eyebrow">The first release</p><h2>Good things, in small batches.</h2></div>
+        <p class="section-note">Every product is selected and packed by Ihsan. Add what you like to your bag, then call to place your order.</p>
+      </div>
+      <div class="category-row" id="categoryRow"></div>
+      <div class="product-grid" id="productGrid"><div class="loading-card">Loading the collection…</div></div>
+    </section>
+
+    <section class="story section-shell" id="story">
+      <div class="story-number">01<span>/02</span></div>
+      <div class="story-copy"><p class="eyebrow">Why this shop exists</p><h2 id="aboutTitle"></h2><p id="aboutText"></p><a href="#contact" class="text-link">Have a question? Let’s talk <span>↗</span></a></div>
+      <div class="story-poster"><span>HAND<br>MADE<br>USEFUL</span></div>
+    </section>
+
+    <section class="contact section-shell" id="contact">
+      <div><p class="eyebrow">Place an order</p><h2>Ready when you are.</h2></div>
+      <div class="contact-detail"><p>Online checkout is intentionally personal. When you are ready, call during business hours and Ihsan will help finish your order.</p><a class="phone-link" id="phoneLink" href="tel:512-429-8551">512-429-8551 <span>↗</span></a><p class="hours" id="hours"></p></div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div><a class="wordmark footer-wordmark" href="/"><span class="wordmark-mark">IS</span><span id="footerBrand">Ihsan's Shop</span></a><p id="footerNote"></p></div><div class="footer-links"><a href="#shop">Shop</a><a href="#story">Story</a><a href="/login.html">Admin sign-in</a></div><p class="copyright">© <span id="year"></span> Ihsan's Shop</p></footer>
+
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <aside class="cart-drawer" id="cartDrawer" aria-label="Shopping bag" aria-hidden="true">
+    <div class="drawer-header"><div><p class="eyebrow">Your selection</p><h2>Your bag</h2></div><button class="close-button" id="closeCart" aria-label="Close shopping bag">×</button></div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer"><div class="cart-total"><span>Estimated total</span><strong id="cartTotal">$0.00</strong></div><a class="button button-dark button-full" id="checkoutButton" href="/checkout.html">Continue to checkout <span>↗</span></a><p class="small-note">No payment is collected online. You will call to place your order.</p></div>
+  </aside>
+  <script src="/app.js"></script>
+</body>
+</html>

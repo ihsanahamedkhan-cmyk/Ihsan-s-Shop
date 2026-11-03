@@ -1,0 +1,66 @@
+{
+  "settings": {
+    "brandName": "Ihsan's Shop",
+    "eyebrow": "Made with intention · shipped with care",
+    "heroTitle": "Useful things, made by Ihsan.",
+    "heroText": "A small collection of thoughtful goods for everyday life. Browse the first release below and check back as new pieces arrive.",
+    "heroButtonLabel": "Shop the collection",
+    "announcement": "Local orders are welcome · Call 512-429-8551 during business hours CST",
+    "phone": "512-429-8551",
+    "hours": "Monday–Saturday · 9:00 AM–6:00 PM CST",
+    "accentColor": "#d96c4f",
+    "aboutTitle": "Small-batch, genuinely useful.",
+    "aboutText": "Every item here starts with a simple question: can this make an ordinary day a little better? The answer becomes a product, made in small batches and offered directly to you.",
+    "footerNote": "Thoughtful goods from Ihsan, made for your everyday."
+  },
+  "admin": {
+    "username": "Ihsan Khan",
+    "passwordHash": "ce3c58b3f3455e93408fd74cef8ba993888949186a7d82284ca7682e77b54f6a"
+  },
+  "products": [
+    {
+      "id": "canvas-tote",
+      "name": "Everyday Canvas Tote",
+      "description": "A sturdy carry-all for errands, books, and days that do not fit in your pockets.",
+      "price": 28,
+      "category": "Carry",
+      "inventory": 12,
+      "featured": true,
+      "active": true,
+      "placeholder": "Tote / 01"
+    },
+    {
+      "id": "cedar-desk-tray",
+      "name": "Cedar Desk Tray",
+      "description": "A warm, simple landing place for keys, notes, and the small things you reach for daily.",
+      "price": 36,
+      "category": "Home",
+      "inventory": 8,
+      "featured": true,
+      "active": true,
+      "placeholder": "Cedar / 02"
+    },
+    {
+      "id": "linen-apron",
+      "name": "Utility Linen Apron",
+      "description": "Soft, durable linen with a roomy front pocket and an easy fit for making things.",
+      "price": 42,
+      "category": "Wear",
+      "inventory": 6,
+      "featured": true,
+      "active": true,
+      "placeholder": "Linen / 03"
+    },
+    {
+      "id": "daily-notebook",
+      "name": "Daily Notes Notebook",
+      "description": "A quiet place for plans, sketches, lists, and the idea you do not want to lose.",
+      "price": 14,
+      "category": "Paper",
+      "inventory": 24,
+      "featured": false,
+      "active": true,
+      "placeholder": "Notes / 04"
+    }
+  ]
+}

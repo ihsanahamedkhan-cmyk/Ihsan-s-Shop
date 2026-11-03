@@ -1,0 +1,10 @@
+{
+  "name": "ihsans-shop",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A simple, customizable storefront for Ihsan's Shop.",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  }
+}
