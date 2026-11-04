@@ -9,6 +9,7 @@ const musicMuteButton = $('#musicMuteButton');
 document.documentElement.dataset.mode = localStorage.getItem('ihsan_shop_mode') || 'light';
 music.volume = 0.16;
 music.muted = localStorage.getItem('ihsan_shop_music_muted') === 'true';
+music.autoplay = true;
 function updateThemeToggle() {
   const dark = document.documentElement.dataset.mode === 'dark';
   themeToggle.innerHTML = dark ? '◐ <span>Light mode</span>' : '◐ <span>Dark mode</span>';
@@ -25,6 +26,7 @@ musicToggle.addEventListener('click', async () => { if (music.paused) { try { aw
 musicMuteButton.addEventListener('click', () => { music.muted = !music.muted; localStorage.setItem('ihsan_shop_music_muted', String(music.muted)); updateMusicControls(); });
 music.addEventListener('play', updateMusicControls); music.addEventListener('pause', updateMusicControls);
 updateThemeToggle(); updateMusicControls();
+music.play().catch(() => { updateMusicControls(); });
 
 async function loadShop() {
   const [storeResponse, productResponse] = await Promise.all([fetch('/api/store'), fetch('/api/products')]);
